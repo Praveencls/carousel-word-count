@@ -1,0 +1,59 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    int count = 0;
+    var activeClass = "";
+}
+
+@model CodeTest.Controllers.ResponseData
+<div id="errorMsg" class="errorMsg"></div>
+<div class="col-12 info-input" >
+    <div class="row">
+        <div class="col-6">
+            <p>Enter Website URL in text box, eg: http://www.msn.com</p>
+            <input type="text" id="txtUrl" class="userinput" name="url" value="http://www.msn.com" />
+            <button id="btnGet" type="submit"><span>Submit</span></button>
+        </div>
+        <div class="col-6">
+           &nbsp;
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <p>Enter number to display most occurring words</p>
+            <input type="text" id="txtCount" class="userinput" name="textCount" value="7" />
+        </div>
+        <div class="col-7">
+            <p>Provide comma separated values which don't want to include in count.</p>
+            <input type="text" id="txtAreaForNotCount" class="userinput" name="txtAreaForNotCount" />
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    
+    <h2>Carousel</h2>
+    <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="2000" data-pause="hover">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+        </ol>
+        <!-- Wrapper for slides -->
+        <div id="carousel-inner" class="carousel-inner" role="listbox">
+
+        </div>
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+            <span class="sr-only"> Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <div id="word-count-report" class="word-count-report" style="margin:30px 0;" data-count="7">
+        <div id='loadingmessage' style='display:none'>
+            <img src="~/content/images/bx_loader.gif" />
+        </div>
+    </div>
+</div>

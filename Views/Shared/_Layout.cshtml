@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Code Test</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+
+    @*@Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)*@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.carousel').carousel();
+        });
+        $(".userinput").keyup(function (event) {
+            if (event.keyCode === 13) {
+                $("#btnGet").click();
+            }
+        });
+        $(function () {
+            $("#btnGet").click(function () {
+
+                $('#loadingmessage').show();
+                var textAreaNotCountContent = "";
+                var count = "0";
+                var url = "";
+
+                if ($('#txtAreaForNotCount').val() != "") {
+                    textAreaNotCountContent = $('#txtAreaForNotCount').val();
+                }
+                if ($('#txtCount').val() != "") {
+                    count = $('#txtCount').val();
+                }
+                if ($('#txtUrl').val() != "") {
+                    url = $('#txtUrl').val();
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/AjaxMethod",
+                    context: this,
+                    data: { url: url, noCountContent: textAreaNotCountContent, count: count },
+                    success: function (response) {
+                        $("#carousel-inner").html(response.Slides);
+                        $('#word-count-report').html(response.WordcountReport);
+                        $('#errorMsg').html(response.Error);
+                    },
+                    failure: function (response) {
+                        //alert(response.responseText);
+                    },
+                    error: function (response) {
+                        //alert(response.responseText);
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
