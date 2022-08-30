@@ -98,40 +98,48 @@ namespace CodeTest.Controllers
             ResponseData response = new ResponseData();
 
             int i = 0;
-            foreach (var node in images)
+            if (images != null)
             {
-                if (node.Attributes["src"] == null)
-                    continue;
-                var src = node.Attributes["src"].Value;
-                if (src.StartsWith("/"))
-                    node.SetAttributeValue("src", url + src);
-
-                var newImage = new ImageDetail()
+                foreach (var node in images)
                 {
-                    Alt = node.Attributes["alt"] != null ? node.Attributes["alt"].Value : "",
-                    Src = node.Attributes["src"].Value,
-                    Class = node.Attributes["class"] != null ? node.Attributes["class"].Value : "",
-                    Height = node.Attributes["height"] != null ? node.Attributes["height"].Value : "",
-                    Width = node.Attributes["width"] != null ? node.Attributes["width"].Value : ""
-                };
+                    if (node.Attributes["src"] == null)
+                        continue;
+                    var src = node.Attributes["src"].Value;
+                    if (src.StartsWith("/"))
+                        node.SetAttributeValue("src", url + src);
 
-                var activeClass = i == 0 ? "item active" : "item";
-                var slideItem = @"<div class='" + @activeClass + "'><div class='carousel-content'><div style = 'margin: 0 auto' ><p><img alt='" + @newImage.Alt + "' src='" + @newImage.Src + "' style='" + @newImage.Class + "' width='" + @newImage.Width + "' height='" + @newImage.Height + "' /></p></div></div></div>";
+                    var newImage = new ImageDetail()
+                    {
+                        Alt = node.Attributes["alt"] != null ? node.Attributes["alt"].Value : "",
+                        Src = node.Attributes["src"].Value,
+                        Class = node.Attributes["class"] != null ? node.Attributes["class"].Value : "",
+                        Height = node.Attributes["height"] != null ? node.Attributes["height"].Value : "",
+                        Width = node.Attributes["width"] != null ? node.Attributes["width"].Value : ""
+                    };
 
-                imageNodes.Add(slideItem);
-                i++;
+                    var activeClass = i == 0 ? "item active" : "item";
+                    var slideItem = @"<div class='" + @activeClass + "'><div class='carousel-content'><div style = 'margin: 0 auto' ><p><img alt='" + @newImage.Alt + "' src='" + @newImage.Src + "' style='" + @newImage.Class + "' width='" + @newImage.Width + "' height='" + @newImage.Height + "' /></p></div></div></div>";
+
+                    imageNodes.Add(slideItem);
+                    i++;
+                }
             }
 
             response.Slides = imageNodes;
 
             var paragraphs = htmlDoc.DocumentNode.SelectNodes("//div/p");
-            StringBuilder paragraphNodes = new StringBuilder();
-            foreach (var node in paragraphs)
-            {
-                if (!string.IsNullOrEmpty(node.InnerText))
-                    paragraphNodes.Append(node.InnerText);
-            }
+            if (paragraphs == null)
+                paragraphs = htmlDoc.DocumentNode.SelectNodes("//p");
 
+            StringBuilder paragraphNodes = new StringBuilder();
+            if (paragraphs != null)
+            {
+                foreach (var node in paragraphs)
+                {
+                    if (!string.IsNullOrEmpty(node.InnerText))
+                        paragraphNodes.Append(node.InnerText);
+                }
+            }
             response.Content = paragraphNodes.ToString();
             response.WordcountReport = GetWordCountReport(response.Content, count, noCountContent, url);
             return response;
